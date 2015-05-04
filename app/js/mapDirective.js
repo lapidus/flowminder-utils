@@ -43,6 +43,8 @@ angular.module('flowminderUtils')
 					// Add filtering "from district"
 					// via attributes to the directive
 					//
+					// bubbleData = _.filter(bubbleData... etc);
+					//
 
 					console.log('Bubble data: ', bubbleData);
 
@@ -102,18 +104,6 @@ angular.module('flowminderUtils')
 
 										return radiusScale(Math.abs(bubbleItem.value));
 
-										// if(bubbleItem) {
-										// 	var adjustedSize = Math.abs(bubbleItem.value) * 0.00006;
-										// 	if(adjustedSize < 2) {
-										// 		return 2;
-										// 	}
-										// 	else {
-										// 		return adjustedSize;
-										// 	}
-										// }
-										// else {
-										// 	return 3;
-										// }
 									});
 
 				});
