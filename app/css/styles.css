@@ -1,0 +1,11 @@
+svg {
+	border:1px solid #000;
+}
+.subunit {
+	fill:#e2e2e2;
+	stroke:#fff;
+}
+.bubble {
+	stroke:#fff;
+	stroke-weight:1px;
+}
