@@ -19,7 +19,7 @@ angular.module('flowminderUtils')
 										.attr('height', height);
 
 				var projection = d3.geo.mercator()
-													.scale(3333)
+													.scale(4333)
 													.center([85, 28])
 													.translate([width / 2, height / 2]);
 
@@ -33,80 +33,98 @@ angular.module('flowminderUtils')
 						.append('path')
 						.attr('d', path)
 						.attr('class', function(d, i) { return 'subunit ' + d.properties.DISTRICT; });
+				
 
 				//
 				// Wait for district data to load
 				//
-				scope.districts.then(function(bubbleData) {
+				scope.$watch('data', function (){
+					render();
+				});
 
-					//
-					// Add filtering "from district"
-					// via attributes to the directive
-					//
-					// bubbleData = _.filter(bubbleData... etc);
-					//
+				scope.$watch('distance', function (){
+					render();
+				});
 
-					console.log('Bubble data: ', bubbleData);
+				var container = svg.append('g')
+					.attr('class', 'bubbles');
 
-					var bubbleMax = _.max(bubbleData, function(item) {
-						return item.value;
+				function render(){
+
+					if(!scope.data) return;
+
+					var valueColumn = "above normal_" + scope.distance;
+
+					_.each(subunits.features, function(obj, key){
+						obj.value = _.findWhere(scope.data, {'to' : obj.properties.DISTRICT })[valueColumn];
+					})
+
+					subunits.features.sort(function (a, b){
+						return a.value - b.value;
 					});
-					var bubbleMin = _.min(bubbleData, function(item) {
-						return item.value;
+
+					console.log("read", subunits.features);
+
+					var bubbleMax = _.max(subunits.features, function(item) {
+						return Math.abs(item.value);
 					});
+					var bubbleMin = _.min(subunits.features, function(item) {
+						return Math.abs(item.value);
+					});
+
 
 					console.log('BubbleMin: ', bubbleMin);
 					console.log('BubbleMax: ', bubbleMax);
 
 					var colorScale = d3.scale.sqrt()
-											.domain([bubbleMin.value, bubbleMax.value])
-											.range(['#00569A', '#B71C1C']);
-											// .range(['#00569a', 'rgba(183, 28, 28, 0.5)']);
+						.domain([bubbleMin.value, bubbleMax.value])
+						.range(['#00569A', '#B71C1C']);
+					// .range(['#00569a', 'rgba(183, 28, 28, 0.5)']);
 
 					var radiusScale = d3.scale.sqrt()
-															.domain([Math.abs(bubbleMin.value), Math.abs(bubbleMax.value)])
-															.range([1, 30]);
+						.domain([Math.abs(bubbleMin.value), Math.abs(bubbleMax.value)])
+						.range([1, 30]);
 
 					// var opacityScale = d3.scale.linear()
 					// 										.domain([bubbleMin.value, bubbleMax.value])
 					// 										.range([1, 0.6]);
 
-					svg.append('g')
-							.attr('class', 'bubbles')
-							.selectAll('bubble')
-								.data(subunits.features)
-									.enter()
-									.append('circle')
-									// .attr('fill-opacity', function(d) {
-									// 	var item = _.find(bubbleData, function(item) {
-									// 		return item.to == d.properties.DISTRICT;
-									// 	});
-									// 	return opacityScale(item.value);
-									// })
-									.attr('fill-opacity', 0.8)
-									.attr('class', function(d) {
-										return 'bubble ' + 'bubble_' + d.properties.DISTRICT;
-									})
-									.style('fill', function(d) {
-										var item = _.find(bubbleData, function(item) {
-											return item.to == d.properties.DISTRICT;
-										});
-										return colorScale(item.value);
-									})
-									.attr('transform', function(d) { return 'translate(' + path.centroid(d) + ')'; })
-									.attr('r', function(d) {
 
-										var bubbleItem = _.find(bubbleData, function(item) {
-											return item.to == d.properties.DISTRICT;
-										});
+					var bubbles = container.selectAll('.bubble')
+						.data(subunits.features, function (d){
+						    return d.properties.DISTRICT;
+						});
 
-										console.log('Bubble Item: ', bubbleItem);
+					bubbles.enter()
+						.append('circle');
 
-										return radiusScale(Math.abs(bubbleItem.value));
+					bubbles.transition()
+						// .attr('fill-opacity', function(d) {
+						// 	var item = _.find(bubbleData, function(item) {
+						// 		return item.to == d.properties.DISTRICT;
+						// 	});
+						// 	return opacityScale(item.value);
+						// })
+						.attr('fill-opacity', 0.8)
+						.attr('class', function(d) {
+							return 'bubble ' + 'bubble_' + d.properties.DISTRICT;
+						})
+						.style('fill', function(d) {
+							var item = d.properties.DISTRICT;
+							return "#00569a"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 
-									});
+						})
+						.style('stroke', function(d) {
+							return "#333";  //colorScale(item.value);
+						})
 
-				});
+						.attr('transform', function(d) { return 'translate(' + path.centroid(d) + ')'; })
+						.attr('r', function(d) {
+
+							//console.log('Bubble Item: ', bubbleItem);
+							return radiusScale(Math.abs(d.value));
+						});
+				}
 
 			});
 
@@ -117,10 +135,12 @@ angular.module('flowminderUtils')
 			scope: {
 				'map': '=',
 				'districts': '=',
-				'district': '='
+				'district': '=',
+				'data' : '=',
+				'distance' : '='
 			},
 			restrict: 'A',
-			template: '<h1>Map directive</h1>',
+			templateUrl: 'map.html',
 			// templateUrl: '',
 			link: linker
 		};

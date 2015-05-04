@@ -6,14 +6,25 @@
 </head>
 <body ng-controller="mainCtrl">
 
+	<script type="text/ng-template" id="map.html">
+		<h1>{{ district }}</h1>
+	</script>
+
+	<select name="" ng-model="distance" id="">
+		<option value="0">0</option>
+		<option value="5">5</option>
+		<option value="10">10</option>
+		<option value="15">15</option>
+		<option value="20">20</option>
+	</select>
+
+
+
 	<div class="main" id="main">
-		<div map="mapPromise" districts="dataPromise"></div>
-		<div map="mapPromise" districts="dataPromise"></div>
-		<div map="mapPromise" districts="dataPromise"></div>
-		<div map="mapPromise" districts="dataPromise"></div>
-		<div map="mapPromise" districts="dataPromise"></div>
-		<div map="mapPromise" districts="dataPromise"></div>
-		<div map="mapPromise" districts="dataPromise"></div>
+
+		<div distance="distance" data="model.districtsData['nation']" district="'Overall'" map="mapPromise" districts="dataPromise"></div>
+
+		<div ng-repeat="district in model.districts" distance="distance" data="model.districtsData[district]" district="district" map="mapPromise" districts="dataPromise"></div>
 	</div>
 
 	<script src="vendor/angular/angular.min.js"></script>
