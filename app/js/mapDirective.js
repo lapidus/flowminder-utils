@@ -28,7 +28,7 @@ angular.module('flowminderUtils')
 				var subunits = topojson.feature(nepal, nepal.objects.features);
 
 				svg.selectAll('.subunit')
-						.data(topojson.feature(nepal, nepal.objects.features).features)
+						.data(subunits.features)
 						.enter()
 						.append('path')
 						.attr('d', path)
@@ -39,45 +39,48 @@ angular.module('flowminderUtils')
 				//
 				scope.districts.then(function(bubbleData) {
 
+					console.log('Bubble data: ', bubbleData);
+
 					var bubbleMax = _.max(bubbleData, function(item) {
-						return item.SUM;
+						return item.value;
 					});
 					var bubbleMin = _.min(bubbleData, function(item) {
-						return item.SUM;
+						return item.value;
 					});
 
-					var colors = d3.scale.linear()
-											.domain([bubbleMin.SUM, bubbleMax.SUM])
-											.range(['#00569A', '#B71C1C']);
+					console.log('BubbleMin: ', bubbleMin);
+					console.log('BubbleMax: ', bubbleMax);
 
-					console.log('Bubble data: ', bubbleData);
+					var colors = d3.scale.linear()
+											.domain([bubbleMin.value, bubbleMax.value])
+											.range(['#00569A', '#B71C1C']);
 
 					svg.append('g')
 							.attr('class', 'bubbles')
 							.selectAll('bubble')
-								.data(topojson.feature(nepal, nepal.objects.features).features)
+								.data(subunits.features)
 									.enter()
 									.append('circle')
 									.attr('class', function(d) {
-										return 'bubble ' + 'bubble_' + d.properties.ZONE_NAME;
+										return 'bubble ' + 'bubble_' + d.properties.DISTRICT;
 									})
 									.style('fill', function(d) {
 										var item = _.find(bubbleData, function(item) {
-											return item.ZONE_NAME == d.properties.ZONE_NAME;
+											return item.to == d.properties.DISTRICT;
 										});
-										return colors(item.SUM);
+										return colors(item.value);
 									})
 									.attr('transform', function(d) { return 'translate(' + path.centroid(d) + ')'; })
 									.attr('r', function(d) {
 
 										var bubbleItem = _.find(bubbleData, function(item) {
-											return item.ZONE_NAME == d.properties.ZONE_NAME;
+											return item.to == d.properties.DISTRICT;
 										});
 
 										console.log('Bubble Item: ', bubbleItem);
 
 										if(bubbleItem) {
-											var adjustedSize = Math.abs(bubbleItem.SUM) / 400;
+											var adjustedSize = Math.abs(bubbleItem.value) * 0.00006;
 											if(adjustedSize < 2) {
 												return 2;
 											}

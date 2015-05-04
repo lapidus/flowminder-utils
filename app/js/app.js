@@ -24,7 +24,7 @@ angular.module('flowminderUtils')
 
 		var deferredData = $q.defer();
 
-		$http.get('data/data.csv')
+		$http.get('data/flows.json')
 			.success(deferredData.resolve)
 			.error(deferredData.reject);
 
