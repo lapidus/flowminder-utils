@@ -1,0 +1,16 @@
+{
+	"ecmaFeatures": {
+		"jsx": true
+	},
+	"rules": {
+		"semi": 2,
+		"quotes":[1, "single"],
+		"no-unused-vars": [0, {"vars": "all", "args": "after-used"}],
+		"no-path-concat": 0,
+		"new-cap": 0
+	},
+	"env": {
+		"browser": true,
+		"node": true
+	}
+}
