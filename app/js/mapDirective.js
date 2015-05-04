@@ -35,7 +35,7 @@ angular.module('flowminderUtils')
 						.attr('class', function(d, i) { return 'subunit ' + d.properties.DISTRICT; });
 
 				//
-				// Load district data
+				// Wait for district data to load
 				//
 				scope.districts.then(function(bubbleData) {
 
