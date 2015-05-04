@@ -33,7 +33,7 @@ angular.module('flowminderUtils')
 						.append('path')
 						.attr('d', path)
 						.attr('class', function(d, i) { return 'subunit ' + d.properties.DISTRICT; });
-				
+
 
 				//
 				// Wait for district data to load
@@ -53,17 +53,17 @@ angular.module('flowminderUtils')
 
 					if(!scope.data) return;
 
-					var valueColumn = "above normal_" + scope.distance;
+					var valueColumn = 'above normal_' + scope.distance;
 
 					_.each(subunits.features, function(obj, key){
-						obj.value = _.findWhere(scope.data, {'to' : obj.properties.DISTRICT })[valueColumn];
-					})
+						obj.value = _.findWhere(scope.data, {'to': obj.properties.DISTRICT })[valueColumn];
+					});
 
 					subunits.features.sort(function (a, b){
 						return a.value - b.value;
 					});
 
-					console.log("read", subunits.features);
+					console.log('read', subunits.features);
 
 					var bubbleMax = _.max(subunits.features, function(item) {
 						return Math.abs(item.value);
@@ -92,7 +92,7 @@ angular.module('flowminderUtils')
 
 					var bubbles = container.selectAll('.bubble')
 						.data(subunits.features, function (d){
-						    return d.properties.DISTRICT;
+							return d.properties.DISTRICT;
 						});
 
 					bubbles.enter()
@@ -111,13 +111,11 @@ angular.module('flowminderUtils')
 						})
 						.style('fill', function(d) {
 							var item = d.properties.DISTRICT;
-							return "#00569a"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
-
+							return '#00569a'; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 						})
 						.style('stroke', function(d) {
-							return "#333";  //colorScale(item.value);
+							return '#fff';  //colorScale(item.value);
 						})
-
 						.attr('transform', function(d) { return 'translate(' + path.centroid(d) + ')'; })
 						.attr('r', function(d) {
 
@@ -136,8 +134,8 @@ angular.module('flowminderUtils')
 				'map': '=',
 				'districts': '=',
 				'district': '=',
-				'data' : '=',
-				'distance' : '='
+				'data': '=',
+				'distance': '='
 			},
 			restrict: 'A',
 			templateUrl: 'map.html',
