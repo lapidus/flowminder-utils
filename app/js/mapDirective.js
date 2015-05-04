@@ -19,7 +19,7 @@ angular.module('flowminderUtils')
 										.attr('height', height);
 
 				var projection = d3.geo.mercator()
-													.scale(3000)
+													.scale(3333)
 													.center([85, 28])
 													.translate([width / 2, height / 2]);
 
@@ -39,6 +39,11 @@ angular.module('flowminderUtils')
 				//
 				scope.districts.then(function(bubbleData) {
 
+					//
+					// Add filtering "from district"
+					// via attributes to the directive
+					//
+
 					console.log('Bubble data: ', bubbleData);
 
 					var bubbleMax = _.max(bubbleData, function(item) {
@@ -51,9 +56,18 @@ angular.module('flowminderUtils')
 					console.log('BubbleMin: ', bubbleMin);
 					console.log('BubbleMax: ', bubbleMax);
 
-					var colors = d3.scale.linear()
+					var colorScale = d3.scale.sqrt()
 											.domain([bubbleMin.value, bubbleMax.value])
 											.range(['#00569A', '#B71C1C']);
+											// .range(['#00569a', 'rgba(183, 28, 28, 0.5)']);
+
+					var radiusScale = d3.scale.sqrt()
+															.domain([Math.abs(bubbleMin.value), Math.abs(bubbleMax.value)])
+															.range([1, 30]);
+
+					// var opacityScale = d3.scale.linear()
+					// 										.domain([bubbleMin.value, bubbleMax.value])
+					// 										.range([1, 0.6]);
 
 					svg.append('g')
 							.attr('class', 'bubbles')
@@ -61,6 +75,13 @@ angular.module('flowminderUtils')
 								.data(subunits.features)
 									.enter()
 									.append('circle')
+									// .attr('fill-opacity', function(d) {
+									// 	var item = _.find(bubbleData, function(item) {
+									// 		return item.to == d.properties.DISTRICT;
+									// 	});
+									// 	return opacityScale(item.value);
+									// })
+									.attr('fill-opacity', 0.8)
 									.attr('class', function(d) {
 										return 'bubble ' + 'bubble_' + d.properties.DISTRICT;
 									})
@@ -68,7 +89,7 @@ angular.module('flowminderUtils')
 										var item = _.find(bubbleData, function(item) {
 											return item.to == d.properties.DISTRICT;
 										});
-										return colors(item.value);
+										return colorScale(item.value);
 									})
 									.attr('transform', function(d) { return 'translate(' + path.centroid(d) + ')'; })
 									.attr('r', function(d) {
@@ -79,18 +100,20 @@ angular.module('flowminderUtils')
 
 										console.log('Bubble Item: ', bubbleItem);
 
-										if(bubbleItem) {
-											var adjustedSize = Math.abs(bubbleItem.value) * 0.00006;
-											if(adjustedSize < 2) {
-												return 2;
-											}
-											else {
-												return adjustedSize;
-											}
-										}
-										else {
-											return 3;
-										}
+										return radiusScale(Math.abs(bubbleItem.value));
+
+										// if(bubbleItem) {
+										// 	var adjustedSize = Math.abs(bubbleItem.value) * 0.00006;
+										// 	if(adjustedSize < 2) {
+										// 		return 2;
+										// 	}
+										// 	else {
+										// 		return adjustedSize;
+										// 	}
+										// }
+										// else {
+										// 	return 3;
+										// }
 									});
 
 				});
@@ -103,7 +126,8 @@ angular.module('flowminderUtils')
 			name: 'map',
 			scope: {
 				'map': '=',
-				'districts': '='
+				'districts': '=',
+				'district': '='
 			},
 			restrict: 'A',
 			template: '<h1>Map directive</h1>',
