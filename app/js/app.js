@@ -7,7 +7,13 @@ angular.module('flowminderUtils')
 
 		console.log('Main controller loaded.');
 
-		$scope.model = {};
+
+		$scope.distance = 0;
+
+		$scope.model = {
+			districts : ["Kathmandu", "Gorkha", "Dhading", "Nuwakot", "Rasuwa", "Sindhupalchok"],
+			districtsData : {},
+		};
 
 		var deferredMap = $q.defer();
 
@@ -23,7 +29,6 @@ angular.module('flowminderUtils')
 
 
 		var deferredData = $q.defer();
-
 		$http.get('data/flows.json')
 			.success(deferredData.resolve)
 			.error(deferredData.reject);
@@ -31,7 +36,18 @@ angular.module('flowminderUtils')
 		$scope.dataPromise = deferredData.promise;
 
 		$scope.dataPromise.then(function(d) {
-			$scope.model.data = d;
+			$scope.model.districtsData = _.groupBy(d, 'from');
+		});
+
+		var deferredData = $q.defer();
+		$http.get('data/nation.json')
+			.success(deferredData.resolve)
+			.error(deferredData.reject);
+
+		$scope.dataPromise = deferredData.promise;
+
+		$scope.dataPromise.then(function(d) {
+			$scope.model.districtsData['nation'] = d;
 		});
 
 	}]);
