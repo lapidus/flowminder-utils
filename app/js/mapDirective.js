@@ -59,15 +59,19 @@ angular.module('flowminderUtils')
 
 				console.log('dd', districtFeature);
 
-				if(scope.district != "Overall") {
+				if(scope.district != 'Overall') {
 					var pin = svg.append('g')
 						.attr('class', 'pin')
 						.attr('transform', function (d) {
-							return 'translate(' + path.centroid(districtFeature) + ')';
+							var centroid = path.centroid(districtFeature);
+							// return 'translate(' + path.centroid(districtFeature) + ')';
+							return 'translate(' + (centroid[0] - 24) + ', ' + (centroid[1] - 48) + ')';
 						})
-						.append('circle')
-						.attr('r', 20)
-						.attr('stroke', 'green')
+						// .append('circle')
+						.append('path')
+							.attr('d', 'M24 0c-11.046 0-20 8.5-20 20 0 17.918 20 28 20 28s20-10.082 20-28c0-11.5-8.954-20-20-20v0z');
+						// .attr('r', 20)
+						// .attr('stroke', '#fff')
 				}
 
 				function render() {

@@ -7,7 +7,10 @@ body {
 }
 
 svg {
-	border:1px solid #000;
+	border:1px solid #333;
+}
+svg text {
+	font-size:14px;
 }
 .subunit {
 	fill:#e2e2e2;
@@ -21,6 +24,11 @@ svg {
 	fill:none;
 	stroke:#00569A;
 	stroke-width:3px;
+}
+.pin {
+	fill:#000;
+	stroke:#fff;
+	stroke-width:2px;
 }
 /*
 .Gorkha {

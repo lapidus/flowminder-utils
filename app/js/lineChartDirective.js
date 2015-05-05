@@ -18,11 +18,11 @@ angular.module('flowminderUtils')
 			var linedata = [5, 1, 2, 5, 7, 3, 6];
 
 			var width = 280;
-			var height = 140;
+			var height = 160;
 
 			var yScale = d3.scale.linear()
 										.domain([d3.min(lineChartData), d3.max(lineChartData)])
-										.range([40, (height - 20)]);
+										.range([40, (height - 40)]);
 
 			var svg = d3.select(element[0])
 								.append('svg')
@@ -44,6 +44,16 @@ angular.module('flowminderUtils')
 					.datum(lineChartData)
 					.attr('class', 'line')
 					.attr('d', line);
+
+			svg.append('text')
+					.attr('x', 0)
+					.attr('y', (height - 20))
+					.text(d3.format(',f')(lineChartData[0]));
+
+			svg.append('text')
+					.attr('x', (width - 80))
+					.attr('y', 20)
+					.text(d3.format(',f')(lineChartData[1]));
 
 		};
 
