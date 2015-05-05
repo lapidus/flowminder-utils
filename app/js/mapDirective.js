@@ -8,10 +8,6 @@ angular.module('flowminderUtils')
 
 			var nepal = scope.map;
 
-			// scope.map.then(function(nepal) {
-
-				console.log('Nepal: ', nepal);
-
 				var width = 940;
 				var height = 460;
 
@@ -30,11 +26,21 @@ angular.module('flowminderUtils')
 				var subunits = topojson.feature(nepal, nepal.objects.features);
 
 				svg.selectAll('.subunit')
-						.data(subunits.features)
-						.enter()
-						.append('path')
-						.attr('d', path)
-						.attr('class', function(d, i) { return 'subunit ' + d.properties.DISTRICT; });
+					.data(subunits.features)
+					.enter()
+					.append('path')
+					.attr('fill', function (){
+						if(scope.district == 'Overall'){
+							return '#f2f2f2';
+						}
+						else{
+							return '#e2e2e2'
+						}
+					})
+
+					.attr('d', path)
+					.attr('class', function(d, i) { return 'subunit ' + d.properties.DISTRICT; });
+
 
 				//
 				// Wait for district data to load
@@ -174,6 +180,58 @@ angular.module('flowminderUtils')
 
 
 
+					var posBubbles = legend.selectAll('.posBubble')
+						.data(["Negative", "Positive"]);
+
+					posBubbles.enter()
+						.append('circle')
+						.attr("class", "posBubble")
+						.style('fill', function(d) {
+
+							if(scope.district == 'Overall'){
+								return d == 'Negative' ? d3.rgb('#00569a').darker(0.4) : d3.rgb('#BF360C').darker(0.4);
+							}
+
+							return d == 'Negative' ? '#00569a' : '#BF360C';
+
+							//return d == 'Negative' ? '#00569a' : '#BF360C'; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+						})
+						.style('fill-opacity', function(d) {
+							return 0.7; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+						})
+						.style('stroke', function(d) {
+							return '#666';  //colorScale(item.value);
+						})
+						.attr('transform', function(d, i) {
+							return 'translate(' + (600 + 100*i) + ',' + (30)  +')';
+						})
+						.attr('r', function(d,i) {
+							return 10;
+						});
+
+					posBubbles.enter()
+						.append('text')
+						.style('fill', function(d) {
+							return '#333';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+						})
+						.style('font-size', function(d) {
+							return '16px';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+						})
+						.style('font-family', function(d) {
+							return 'Droid Sans, Helvetica, sans-serif';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+						})
+						.attr('x', function(d, i) {
+							return (600 + 100*i) +15;
+						})
+						.attr('y', function(d, i) {
+							return (36);
+						})
+						.html(function (d){
+							return d;
+						});
+
+
+
 					var legendBubbles = legend.selectAll('.bubble').data(values);
 
 					var y = 0;
@@ -181,7 +239,7 @@ angular.module('flowminderUtils')
 					legendBubbles.enter()
 						.append('circle')
 						.style('fill', function(d) {
-							return '#fff'; d.negative ? '#00569a' : '#BF360C'; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+							return '#fff'; //d.negative ? '#00569a' : '#BF360C'; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 						})
 						.style('stroke', function(d) {
 							return '#666';  //colorScale(item.value);
@@ -203,7 +261,7 @@ angular.module('flowminderUtils')
 							return '#333';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 						})
 						.style('font-size', function(d) {
-							return '12px';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+							return '16px';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 						})
 						.style('font-family', function(d) {
 							return 'Droid Sans, Helvetica, sans-serif';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
@@ -252,6 +310,9 @@ angular.module('flowminderUtils')
 							var item = d.properties.DISTRICT;
 
 							//return '#00569a'; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+							if(scope.district == 'Overall'){
+								return d.negative ? d3.rgb('#00569a').darker(0.4) : d3.rgb('#BF360C').darker(0.4);
+							}
 
 							return d.negative ? '#00569a' : '#BF360C'; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 

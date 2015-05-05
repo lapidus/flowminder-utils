@@ -10,11 +10,11 @@ svg {
 	border:1px solid #333;
 }
 svg text {
-	font-size:14px;
+	font-size:20px;
 }
 .subunit {
-	fill:#e2e2e2;
-	stroke:#fff;
+
+	stroke:#999;
 }
 .bubble {
 	stroke:#fff;

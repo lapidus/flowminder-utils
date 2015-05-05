@@ -32,13 +32,13 @@ angular.module('flowminderUtils')
 									.attr('transform', 'translate(20, 0)');
 
 			var line = d3.svg.line()
-										.x(function(d, i) {
-											var factor = (width - 40) / (lineChartData.length - 1);
-											return i * factor;
-										})
-										.y(function(d) {
-											return height - yScale(d);
-										})
+					.x(function(d, i) {
+						var factor = (width - 40) / (lineChartData.length - 1);
+						return i * factor;
+					})
+					.y(function(d) {
+						return height - yScale(d);
+					})
 
 
 			svg.append('path')
@@ -52,7 +52,7 @@ angular.module('flowminderUtils')
 					.text(d3.format(',f')(lineChartData[0]));
 
 			svg.append('text')
-					.attr('x', (width - 80))
+					.attr('x', (width - 95))
 					.attr('y', (scope.district == 'Kathmandu') ? (height - yScale(lineChartData[lineChartData.length - 1]) - 25) : (height - yScale(lineChartData[lineChartData.length - 1]) - 10) )
 					.text(d3.format(',f')(lineChartData[lineChartData.length - 1]));
 
