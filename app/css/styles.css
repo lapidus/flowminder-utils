@@ -1,3 +1,11 @@
+html {
+	font-family:"Droid Sans", Helvetica, sans-serif;
+}
+
+body {
+	margin:32px;
+}
+
 svg {
 	border:1px solid #000;
 }

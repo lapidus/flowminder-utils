@@ -5,7 +5,7 @@ angular.module('flowminderUtils')
 
 		var linker = function(scope, element, attrs) {
 
-			
+
 
 		};
 
@@ -15,7 +15,7 @@ angular.module('flowminderUtils')
 				'lineChart': '='
 			},
 			restrict: 'A',
-			template: '<h2>Line Chart</h2>',
+			template: '<h2>Population change</h2>',
 			// templateUrl: '',
 			link: linker
 		};
