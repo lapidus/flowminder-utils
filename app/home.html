@@ -1,0 +1,26 @@
+<script type="text/ng-template" id="map.html">
+	<h1>{{ district }}</h1>
+</script>
+
+<select name="" ng-model="distance" id="" style="position:fixed;top:0;right:0;">
+	<option value="0">0</option>
+	<option value="5">5</option>
+	<option value="10">10</option>
+	<option value="15">15</option>
+	<option value="20">20</option>
+</select>
+
+<!-- <div class="main" id="main">
+	<div distance="distance" data="model['nation']" district="'Overall'" map="mapPromise" districts="dataPromise"></div>
+	<div ng-repeat="district in model.districts" distance="distance" allData="model.d" data="model.districtsData[district]" district="district" map="mapPromise" districts="dataPromise"></div>
+</div> -->
+
+<div class="main" id="main">
+	<div distance="distance" data="model['nation']" district="'Overall'" map="model.map" districts="model.districtsData"></div>
+	<div ng-repeat="district in model.districts" distance="distance" allData="model.allData" data="model.districtsData[district]" district="district" map="model.map" districts="model.districtsData"></div>
+</div>
+
+<div>
+	<div ng-repeat="district in model.districts" line-chart="model.lineChartData" district="district"></div>
+	<!-- <div line-chart="model.lineChartData" district="'Gorkha'"></div> -->
+</div>

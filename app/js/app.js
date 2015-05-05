@@ -1,53 +1,60 @@
 'use strict';
 
-angular.module('flowminderUtils', []);
+angular.module('flowminderUtils', [
+	'ui.router'
+	]);
 
 angular.module('flowminderUtils')
-	.controller('mainCtrl', ['$scope', '$http', '$q', function($scope, $http, $q) {
+	.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
 
-		console.log('Main controller loaded.');
+		$urlRouterProvider.otherwise('/');
 
+		$stateProvider
+			.state('home', {
+				url: '/',
+				resolve: {
+					mapData: ['dataService', function(dataService) {
+						return dataService.getData('data/admin3/features.json')
+							.then(function(data) {
+								return data;
+							}, function(err) {
+								console.log(err);
+							});
+					}],
+					flowsData: ['dataService', function(dataService) {
+						return dataService.getData('data/flows.json')
+							.then(function(data) {
 
-		$scope.distance = 0;
+								var flowsData = {};
 
-		$scope.model = {
-			districts : ["Kathmandu", "Gorkha", "Dhading", "Nuwakot", "Rasuwa", "Sindhupalchok"],
-			districtsData : {},
-		};
+								flowsData.all = data;
+								flowsData.grouped = _.groupBy(data, 'from');
 
-		var deferredMap = $q.defer();
+								return flowsData;
 
-		$http.get('data/admin3/features.json')
-			.success(deferredMap.resolve)
-			.error(deferredMap.reject);
-
-		$scope.mapPromise = deferredMap.promise;
-
-		$scope.mapPromise.then(function(m) {
-			$scope.model.map = m;
-		});
-
-
-		var deferredData = $q.defer();
-		$http.get('data/flows.json')
-			.success(deferredData.resolve)
-			.error(deferredData.reject);
-
-		$scope.dataPromise = deferredData.promise;
-
-		$scope.dataPromise.then(function(d) {
-			$scope.model.districtsData = _.groupBy(d, 'from');
-		});
-
-		var deferredData = $q.defer();
-		$http.get('data/nation.json')
-			.success(deferredData.resolve)
-			.error(deferredData.reject);
-
-		$scope.dataPromise = deferredData.promise;
-
-		$scope.dataPromise.then(function(d) {
-			$scope.model.districtsData['nation'] = d;
-		});
+							}, function(err) {
+								console.log(err);
+							});
+					}],
+					nationData: ['dataService', function(dataService) {
+						return dataService.getData('data/nation.json')
+							.then(function(data) {
+								return data;
+							}, function(err) {
+								console.log(err);
+							});
+					}],
+					lineChartData: ['dataService', function(dataService) {
+						return dataService.getData('data/lineChartData.json')
+							.then(function(data) {
+								return data;
+							}, function(err) {
+								console.log(err);
+							});
+					}]
+				},
+				controller: 'homeCtrl',
+				templateUrl: 'home.html'
+			});
 
 	}]);

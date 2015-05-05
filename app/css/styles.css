@@ -15,9 +15,13 @@ svg {
 }
 .bubble {
 	stroke:#fff;
-	stroke-weight:1px;
+	stroke-width:1px;
 }
-
+.line {
+	fill:none;
+	stroke:#00569A;
+	stroke-width:3px;
+}
 /*
 .Gorkha {
 	fill:#4A90E2;
