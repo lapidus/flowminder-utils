@@ -38,7 +38,8 @@ angular.module('flowminderUtils')
 										})
 										.y(function(d) {
 											return height - yScale(d);
-										});
+										})
+
 
 			svg.append('path')
 					.datum(lineChartData)
@@ -47,13 +48,14 @@ angular.module('flowminderUtils')
 
 			svg.append('text')
 					.attr('x', 0)
-					.attr('y', (height - 20))
+					.attr('y', (height - yScale(lineChartData[0]) + 20))
 					.text(d3.format(',f')(lineChartData[0]));
 
 			svg.append('text')
 					.attr('x', (width - 80))
-					.attr('y', 20)
-					.text(d3.format(',f')(lineChartData[1]));
+					.attr('y', (height - yScale(lineChartData[lineChartData.length - 1]) - 10))
+					.text(d3.format(',f')(lineChartData[lineChartData.length - 1]))
+					.style('text-shadow', '0 3px 0 #fff, -3px 0 0 #fff, 3px 0 0 #fff');
 
 		};
 
