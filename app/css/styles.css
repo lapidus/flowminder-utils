@@ -28,7 +28,14 @@ svg text {
 .pin {
 	fill:#000;
 	stroke:#fff;
-	stroke-width:2px;
+}
+.pin-marker {
+	stroke-width:1px;
+}
+.pin-hole {
+	stroke-width:0;
+	stroke:#fff;
+	fill:transparent;
 }
 /*
 .Gorkha {

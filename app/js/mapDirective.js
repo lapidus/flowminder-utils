@@ -66,12 +66,17 @@ angular.module('flowminderUtils')
 							var centroid = path.centroid(districtFeature);
 							// return 'translate(' + path.centroid(districtFeature) + ')';
 							return 'translate(' + (centroid[0] - 24) + ', ' + (centroid[1] - 48) + ')';
-						})
-						// .append('circle')
-						.append('path')
-							.attr('d', 'M24 0c-11.046 0-20 8.5-20 20 0 17.918 20 28 20 28s20-10.082 20-28c0-11.5-8.954-20-20-20v0z');
-						// .attr('r', 20)
-						// .attr('stroke', '#fff')
+						});
+
+					pin.append('path')
+						.attr('class', 'pin-hole')
+						.attr('d', 'M28 16c0 2.209-1.791 4-4 4s-4-1.791-4-4c0-2.209 1.791-4 4-4s4 1.791 4 4z');
+					pin.append('path')
+						.attr('class', 'pin-marker')
+						.attr('d', 'M24 0c-11.214 0-20 8.86-20 20.168 0 17.582 18.75 27.316 19.546 27.722 0.142 0.074 0.298 0.11 0.454 0.11s0.31-0.036 0.454-0.11c0.798-0.406 19.546-10.14 19.546-27.722 0-11.308-8.786-20.168-20-20.168zM24 22c-3.308 0-6-2.692-6-6s2.692-6 6-6c3.308 0 6 2.692 6 6s-2.692 6-6 6z');
+
+						// .append('path')
+						// 	.attr('d', 'M24 0c-11.046 0-20 8.5-20 20 0 17.918 20 28 20 28s20-10.082 20-28c0-11.5-8.954-20-20-20v0z');
 				}
 
 				function render() {
