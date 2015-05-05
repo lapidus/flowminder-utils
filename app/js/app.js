@@ -36,6 +36,7 @@ angular.module('flowminderUtils')
 		$scope.dataPromise = deferredData.promise;
 
 		$scope.dataPromise.then(function(d) {
+			$scope.model.allData = d;
 			$scope.model.districtsData = _.groupBy(d, 'from');
 		});
 
@@ -47,7 +48,7 @@ angular.module('flowminderUtils')
 		$scope.dataPromise = deferredData.promise;
 
 		$scope.dataPromise.then(function(d) {
-			$scope.model.districtsData['nation'] = d;
+			$scope.model['nation'] = d;
 		});
 
 	}]);

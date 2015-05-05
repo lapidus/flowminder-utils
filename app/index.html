@@ -10,7 +10,7 @@
 		<h1>{{ district }}</h1>
 	</script>
 
-	<select name="" ng-model="distance" id="">
+	<select name="" ng-model="distance" id="" style="position:fixed;top:0;right:0;">
 		<option value="0">0</option>
 		<option value="5">5</option>
 		<option value="10">10</option>
@@ -21,10 +21,8 @@
 
 
 	<div class="main" id="main">
-
-		<div distance="distance" data="model.districtsData['nation']" district="'Overall'" map="mapPromise" districts="dataPromise"></div>
-
-		<div ng-repeat="district in model.districts" distance="distance" data="model.districtsData[district]" district="district" map="mapPromise" districts="dataPromise"></div>
+		<div distance="distance" data="model['nation']" district="'Overall'" map="mapPromise" districts="dataPromise"></div>
+		<div ng-repeat="district in model.districts" distance="distance" allData="model.d" data="model.districtsData[district]" district="district" map="mapPromise" districts="dataPromise"></div>
 	</div>
 
 	<script src="vendor/angular/angular.min.js"></script>
