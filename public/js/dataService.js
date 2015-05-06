@@ -11,4 +11,19 @@ angular.module('flowminderUtils')
 
 			return deferred.promise;
 		};
+
+		// this.getCSV = function(url) {
+		// 	var deferred = $q.defer();
+
+		// 	d3.csv(url, function(err, d) {
+		// 		if(err) {
+		// 			deferred.reject();
+		// 		}
+		// 		else {
+		// 			deferred.resolve(d);
+		// 		}
+		// 	});
+
+		// 	return deferred.promise;
+		// };
 	}]);

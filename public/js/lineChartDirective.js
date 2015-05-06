@@ -9,13 +9,23 @@ angular.module('flowminderUtils')
 			console.log('The data is: ', scope.lineChart);
 			console.log('The district of this line graph is: ', scope.district);
 
+			// var districtData = _.find(scope.lineChart, function(d) {
+			// 	return d[0] == scope.district;
+			// });
+
 			var districtData = _.find(scope.lineChart, function(d) {
-				return d[0] == scope.district;
+				return d.Admin3 == scope.district;
 			});
 
-			var lineChartData = districtData[1];
+			var lineChartData = [];
+
+			_.each(districtData, function(v, k, l) {
+				if(k != 'Admin3') {
+					lineChartData.push(v ? parseInt(v) : 0);
+				}
+			});
+
 			console.log('The line chart data is: ', lineChartData);
-			var linedata = [5, 1, 2, 5, 7, 3, 6];
 
 			var width = 280;
 			var height = 160;
