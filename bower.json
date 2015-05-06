@@ -5,7 +5,7 @@
   "authors": [
     "zimrick <r.zimerman33@gmail.com>"
   ],
-  "main": "gulpfile.js",
+  "main": "index.js",
   "license": "MIT",
   "ignore": [
     "**/.*",

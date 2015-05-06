@@ -9,12 +9,14 @@ angular.module('flowminderUtils')
 
 		$urlRouterProvider.otherwise('/');
 
+		var S3bucket = 'https://s3-eu-west-1.amazonaws.com/flowminder-utils/';
+
 		$stateProvider
 			.state('home', {
 				url: '/',
 				resolve: {
 					mapData: ['dataService', function(dataService) {
-						return dataService.getData('data/admin3/features.json')
+						return dataService.getData(S3bucket + 'data/admin3/features.json')
 							.then(function(data) {
 								return data;
 							}, function(err) {
@@ -22,7 +24,7 @@ angular.module('flowminderUtils')
 							});
 					}],
 					flowsData: ['dataService', function(dataService) {
-						return dataService.getData('data/flows.json')
+						return dataService.getData(S3bucket + 'data/flows.json')
 							.then(function(data) {
 
 								var flowsData = {};
@@ -37,7 +39,7 @@ angular.module('flowminderUtils')
 							});
 					}],
 					nationData: ['dataService', function(dataService) {
-						return dataService.getData('data/nation.json')
+						return dataService.getData(S3bucket + 'data/nation.json')
 							.then(function(data) {
 								return data;
 							}, function(err) {
@@ -45,7 +47,7 @@ angular.module('flowminderUtils')
 							});
 					}],
 					lineChartData: ['dataService', function(dataService) {
-						return dataService.getData('data/lineChartData.json')
+						return dataService.getData(S3bucket + 'data/lineChartData.json')
 							.then(function(data) {
 								return data;
 							}, function(err) {

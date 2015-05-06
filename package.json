@@ -2,7 +2,7 @@
   "name": "flowminder-utils",
   "version": "1.0.0",
   "description": "",
-  "main": "gulpfile.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/lapidus/flowminder-utils/issues"
   },
-  "homepage": "https://github.com/lapidus/flowminder-utils"
+  "homepage": "https://github.com/lapidus/flowminder-utils",
+  "dependencies": {
+    "express": "^4.12.3"
+  }
 }
