@@ -11,6 +11,7 @@ angular.module('flowminderUtils')
 		console.log('lineChartData: ', lineChartData);
 
 		$scope.distance = 0;
+		$scope.factor = 3.24;
 
 		$scope.model = {
 			districts: ['Kathmandu', 'Gorkha', 'Dhading', 'Nuwakot', 'Rasuwa', 'Sindhupalchok'],

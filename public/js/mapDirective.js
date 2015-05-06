@@ -53,6 +53,12 @@ angular.module('flowminderUtils')
 					render();
 				});
 
+				scope.$watch('factor', function (){
+					render();
+				});
+
+
+
 				var container = svg.append('g')
 					.attr('class', 'bubbles');
 
@@ -114,7 +120,7 @@ angular.module('flowminderUtils')
 				}
 
 				function render() {
-
+					
 					if(!scope.data) return;
 
 					var valueColumn = 'above normal_' + scope.distance;
@@ -123,7 +129,7 @@ angular.module('flowminderUtils')
 
 						// obj.value = _.findWhere(scope.data, {'to': obj.properties.DISTRICT })[valueColumn];
 
-						obj.value = _.result(_.findWhere(scope.data, { 'to': obj.properties.DISTRICT }), valueColumn, '0')*3.24;
+						obj.value = _.result(_.findWhere(scope.data, { 'to': obj.properties.DISTRICT }), valueColumn, '0')*scope.factor;
 
 						if(obj.value < 0){
 							obj.negative = true;
@@ -345,7 +351,8 @@ angular.module('flowminderUtils')
 				'districts': '=',
 				'district': '=',
 				'data': '=',
-				'distance': '='
+				'distance': '=',
+				'factor' : '='
 			},
 			restrict: 'A',
 			templateUrl: 'map.html',

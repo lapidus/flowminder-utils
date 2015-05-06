@@ -10,6 +10,9 @@
 	<option value="20">20</option>
 </select>
 
+
+<input type="text" name="" ng-model="factor" id="" style="position:fixed;top:100px;right:0;" />
+
 <!-- <div class="main" id="main">
 	<div distance="distance" data="model['nation']" district="'Overall'" map="mapPromise" districts="dataPromise"></div>
 	<div ng-repeat="district in model.districts" distance="distance" allData="model.d" data="model.districtsData[district]" district="district" map="mapPromise" districts="dataPromise"></div>
@@ -18,8 +21,8 @@
 
 
 <div class="main" id="main">
-	<div distance="distance" data="model['nation']" district="'Overall'" map="model.map" districts="model.districtsData"></div>
-	<div ng-repeat="district in model.districts" distance="distance" allData="model.allData" data="model.districtsData[district]" district="district" map="model.map" districts="model.districtsData"></div>
+	<div factor="factor" distance="distance" data="model['nation']" district="'Overall'" map="model.map" districts="model.districtsData"></div>
+	<div ng-repeat="district in model.districts" factor="factor" distance="distance" allData="model.allData" data="model.districtsData[district]" district="district" map="model.map" districts="model.districtsData"></div>
 </div>
 
 <div>
