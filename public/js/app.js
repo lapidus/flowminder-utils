@@ -9,14 +9,22 @@ angular.module('flowminderUtils')
 
 		$urlRouterProvider.otherwise('/');
 
-		var S3bucket = 'https://s3-eu-west-1.amazonaws.com/flowminder-utils/';
+		//
+		// Access local data files (stored in the 'data' directory)
+		//
+		// var dataRoot = '/';
+
+		//
+		// Access remote data files (stored in the Flowminder-utils bucket)
+		//
+		var dataRoot = 'https://s3-eu-west-1.amazonaws.com/flowminder-utils/';
 
 		$stateProvider
 			.state('home', {
 				url: '/',
 				resolve: {
 					mapData: ['dataService', function(dataService) {
-						return dataService.getData(S3bucket + 'data/admin3/features.json')
+						return dataService.getData(dataRoot + 'data/admin3/features.json')
 							.then(function(data) {
 								return data;
 							}, function(err) {
@@ -24,7 +32,7 @@ angular.module('flowminderUtils')
 							});
 					}],
 					flowsData: ['dataService', function(dataService) {
-						return dataService.getData(S3bucket + 'data/flows.json')
+						return dataService.getData(dataRoot + 'data/flows.json')
 							.then(function(data) {
 
 								var flowsData = {};
@@ -39,7 +47,7 @@ angular.module('flowminderUtils')
 							});
 					}],
 					nationData: ['dataService', function(dataService) {
-						return dataService.getData(S3bucket + 'data/nation.json')
+						return dataService.getData(dataRoot + 'data/nation.json')
 							.then(function(data) {
 								return data;
 							}, function(err) {
@@ -47,7 +55,7 @@ angular.module('flowminderUtils')
 							});
 					}],
 					lineChartData: ['dataService', function(dataService) {
-						return dataService.getData(S3bucket + 'data/lineChartData.json')
+						return dataService.getData(dataRoot + 'data/lineChartData.json')
 							.then(function(data) {
 								return data;
 							}, function(err) {
