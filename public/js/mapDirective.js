@@ -8,10 +8,6 @@ angular.module('flowminderUtils')
 
 			var nepal = scope.map;
 
-			// scope.map.then(function(nepal) {
-
-				console.log('Nepal: ', nepal);
-
 				var width = 940;
 				var height = 460;
 
@@ -30,11 +26,21 @@ angular.module('flowminderUtils')
 				var subunits = topojson.feature(nepal, nepal.objects.features);
 
 				svg.selectAll('.subunit')
-						.data(subunits.features)
-						.enter()
-						.append('path')
-						.attr('d', path)
-						.attr('class', function(d, i) { return 'subunit ' + d.properties.DISTRICT; });
+					.data(subunits.features)
+					.enter()
+					.append('path')
+					.attr('fill', function (){
+						if(scope.district == 'Overall'){
+							return '#f2f2f2';
+						}
+						else{
+							return '#e2e2e2'
+						}
+					})
+
+					.attr('d', path)
+					.attr('class', function(d, i) { return 'subunit ' + d.properties.DISTRICT; });
+
 
 				//
 				// Wait for district data to load
@@ -95,16 +101,16 @@ angular.module('flowminderUtils')
 					// Pin with base
 					//
 
-					// pin.append('path')
-					// 	.attr('class', 'pin-hole')
-					// 	.attr('d', 'M23.998 9.534c-3.088 0-5.6 2.514-5.6 5.6 0 3.088 2.512 5.604 5.6 5.604s5.6-2.516 5.6-5.604c0-3.086-2.512-5.6-5.6-5.6z');
-					// pin.append('path')
-					// 	.attr('class', 'pin-marker')
-					// 	.attr('d', 'M23.998 0.008c-9.814 0-17.5 7.76-17.5 17.666 0 15.368 16.35 23.872 17.046 24.224 0.142 0.070 0.298 0.11 0.454 0.11s0.312-0.040 0.454-0.11c0.696-0.356 17.046-8.856 17.046-24.224 0-9.906-7.686-17.666-17.5-17.666zM23.998 22.736c-4.19 0-7.6-3.41-7.6-7.604 0-4.192 3.41-7.6 7.6-7.6s7.6 3.408 7.6 7.6c0 4.194-3.41 7.604-7.6 7.604z');
-					// pin.append('path')
-					// 	.attr('class', 'pin-marker')
-					// 	.attr('d', 'M35.040 36.402c-4.544 4.598-9.296 7.086-9.676 7.282-0.422 0.21-0.892 0.324-1.364 0.324-0.468 0-0.94-0.114-1.358-0.324-0.382-0.196-5.138-2.684-9.684-7.286-5.576 0.664-12.958 2.168-12.958 5.484 0 4.832 15.702 6.11 24 6.11 8.3 0 24-1.278 24-6.11-0.002-3.304-7.514-4.816-12.96-5.48z');
-
+					/*pin.append('path')
+						.attr('class', 'pin-hole')
+						.attr('d', 'M23.998 9.534c-3.088 0-5.6 2.514-5.6 5.6 0 3.088 2.512 5.604 5.6 5.604s5.6-2.516 5.6-5.604c0-3.086-2.512-5.6-5.6-5.6z');
+					pin.append('path')
+						.attr('class', 'pin-marker')
+						.attr('d', 'M23.998 0.008c-9.814 0-17.5 7.76-17.5 17.666 0 15.368 16.35 23.872 17.046 24.224 0.142 0.070 0.298 0.11 0.454 0.11s0.312-0.040 0.454-0.11c0.696-0.356 17.046-8.856 17.046-24.224 0-9.906-7.686-17.666-17.5-17.666zM23.998 22.736c-4.19 0-7.6-3.41-7.6-7.604 0-4.192 3.41-7.6 7.6-7.6s7.6 3.408 7.6 7.6c0 4.194-3.41 7.604-7.6 7.604z');
+					pin.append('path')
+						.attr('class', 'pin-marker')
+						.attr('d', 'M35.040 36.402c-4.544 4.598-9.296 7.086-9.676 7.282-0.422 0.21-0.892 0.324-1.364 0.324-0.468 0-0.94-0.114-1.358-0.324-0.382-0.196-5.138-2.684-9.684-7.286-5.576 0.664-12.958 2.168-12.958 5.484 0 4.832 15.702 6.11 24 6.11 8.3 0 24-1.278 24-6.11-0.002-3.304-7.514-4.816-12.96-5.48z');
+*/
 				}
 
 				function render() {
@@ -174,6 +180,58 @@ angular.module('flowminderUtils')
 
 
 
+					var posBubbles = legend.selectAll('.posBubble')
+						.data(["Negative", "Positive"]);
+
+					posBubbles.enter()
+						.append('circle')
+						.attr("class", "posBubble")
+						.style('fill', function(d) {
+
+							if(scope.district == 'Overall'){
+								return d == 'Negative' ? d3.rgb('#00569a').darker(0.4) : d3.rgb('#BF360C').darker(0.4);
+							}
+
+							return d == 'Negative' ? '#00569a' : '#BF360C';
+
+							//return d == 'Negative' ? '#00569a' : '#BF360C'; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+						})
+						.style('fill-opacity', function(d) {
+							return 0.7; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+						})
+						.style('stroke', function(d) {
+							return '#666';  //colorScale(item.value);
+						})
+						.attr('transform', function(d, i) {
+							return 'translate(' + (600 + 100*i) + ',' + (30)  +')';
+						})
+						.attr('r', function(d,i) {
+							return 10;
+						});
+
+					posBubbles.enter()
+						.append('text')
+						.style('fill', function(d) {
+							return '#333';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+						})
+						.style('font-size', function(d) {
+							return '16px';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+						})
+						.style('font-family', function(d) {
+							return 'Droid Sans, Helvetica, sans-serif';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+						})
+						.attr('x', function(d, i) {
+							return (600 + 100*i) +15;
+						})
+						.attr('y', function(d, i) {
+							return (36);
+						})
+						.html(function (d){
+							return d;
+						});
+
+
+
 					var legendBubbles = legend.selectAll('.bubble').data(values);
 
 					var y = 0;
@@ -181,7 +239,7 @@ angular.module('flowminderUtils')
 					legendBubbles.enter()
 						.append('circle')
 						.style('fill', function(d) {
-							return '#fff'; d.negative ? '#00569a' : '#BF360C'; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+							return '#fff'; //d.negative ? '#00569a' : '#BF360C'; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 						})
 						.style('stroke', function(d) {
 							return '#666';  //colorScale(item.value);
@@ -203,7 +261,7 @@ angular.module('flowminderUtils')
 							return '#333';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 						})
 						.style('font-size', function(d) {
-							return '12px';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+							return '16px';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 						})
 						.style('font-family', function(d) {
 							return 'Droid Sans, Helvetica, sans-serif';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
@@ -252,6 +310,9 @@ angular.module('flowminderUtils')
 							var item = d.properties.DISTRICT;
 
 							//return '#00569a'; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+							if(scope.district == 'Overall'){
+								return d.negative ? d3.rgb('#00569a').darker(0.4) : d3.rgb('#BF360C').darker(0.4);
+							}
 
 							return d.negative ? '#00569a' : '#BF360C'; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 
