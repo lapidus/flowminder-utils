@@ -56,8 +56,39 @@ angular.module('flowminderUtils')
 
 								var flowsData = {};
 
+
+								_.each(parsedData, function(obj, key){
+									obj['above normal_0'] = +obj['above normal_0'];
+								})
+
 								flowsData.all = parsedData;
 								flowsData.grouped = _.groupBy(parsedData, 'from');
+
+
+								_.each(flowsData.all, function(obj, key){
+									/*Kathmandu, Lalitpur and Bhaktapur*/
+									if(obj.from == "Lalitpur" || obj.from == "Bhaktapur"){
+										if(_.findWhere(flowsData.grouped.Kathmandu, {to : obj.to})) {
+											_.findWhere(flowsData.grouped.Kathmandu, {to: obj.to})['above normal_0'] += obj['above normal_0'];
+										}
+										else{
+											flowsData.grouped.Kathmandu.push({from: "Kathmandu", to: obj.to, 'above normal_0': obj['above normal_0']})
+										}
+									}
+								})
+
+								_.each(flowsData.all, function(obj, key){
+									/*Kathmandu, Lalitpur and Bhaktapur*/
+									if(obj.to == "Lalitpur" || obj.to == "Bhaktapur"){
+										if(_.findWhere(flowsData.grouped[obj.from], {to : 'Kathmandu'})) {
+											_.findWhere(flowsData.grouped[obj.from], {to : 'Kathmandu'})['above normal_0'] += obj['above normal_0'];
+										}
+										else{
+											flowsData.grouped[obj.from].push({to: "Kathmandu", from: obj.from, 'above normal_0': obj['above normal_0']})
+										}
+									}
+								})
+
 
 								console.log('THIS IS WHAT THE UNGROUPING LOOKS LIKE: ', flowsData.all);
 								console.log('THIS IS WHAT THE GROUPING LOOKS LIKE: ', flowsData.grouped);
@@ -79,6 +110,21 @@ angular.module('flowminderUtils')
 						return dataService.getData(dataRoot + 'data/nation.csv')
 							.then(function(data) {
 								var parsedData = d3.csv.parse(data);
+
+								_.each(parsedData, function(obj, key){
+									obj['above normal_0'] = +obj['above normal_0'];
+								})
+
+								_.each(parsedData, function(obj, key){
+
+									/*Kathmandu, Lalitpur and Bhaktapur*/
+									if(obj.to == "Lalitpur" || obj.to == "Bhaktapur"){
+										_.findWhere(parsedData, {to : "Kathmandu"})['above normal_0'] += obj['above normal_0'];
+									}
+								})
+
+
+
 								return parsedData;
 							}, function(err) {
 								console.log(err);

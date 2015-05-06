@@ -120,7 +120,7 @@ angular.module('flowminderUtils')
 				}
 
 				function render() {
-					
+
 					if(!scope.data) return;
 
 					var valueColumn = 'above normal_' + scope.distance;
@@ -293,8 +293,19 @@ angular.module('flowminderUtils')
 							return radiusScale(Math.abs(value));
 						});*/
 
+					var featuresToDraw = _.filter(subunits.features, function (d){
+					    return d.properties.DISTRICT != "Lalitpur" && d.properties.DISTRICT != "Bhaktapur";
+					})
+
+					if(scope.district == "Kathmandu"){
+						var featuresToDraw = _.filter(subunits.features, function (d){
+							return d.properties.DISTRICT != "Lalitpur" && d.properties.DISTRICT != "Bhaktapur" && d.properties.DISTRICT != "Kathmandu" ;
+						})
+					}
+
+
 					var bubbles = container.selectAll('.bubble')
-						.data(subunits.features, function (d){
+						.data(featuresToDraw, function (d){
 							return d.properties.DISTRICT;
 						});
 
