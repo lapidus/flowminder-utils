@@ -123,7 +123,7 @@ angular.module('flowminderUtils')
 
 						// obj.value = _.findWhere(scope.data, {'to': obj.properties.DISTRICT })[valueColumn];
 
-						obj.value = _.findWhere(scope.data, { 'to': obj.properties.DISTRICT })[valueColumn]*3.24;
+						obj.value = _.result(_.findWhere(scope.data, { 'to': obj.properties.DISTRICT }), valueColumn, '0')*3.24;
 
 						if(obj.value < 0){
 							obj.negative = true;
