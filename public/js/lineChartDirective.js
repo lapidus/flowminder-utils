@@ -12,18 +12,44 @@ angular.module('flowminderUtils')
 			// var districtData = _.find(scope.lineChart, function(d) {
 			// 	return d[0] == scope.district;
 			// });
-
-			var districtData = _.find(scope.lineChart, function(d) {
-				return d.Admin3 == scope.district;
-			});
-
+			var districtData;
 			var lineChartData = [];
 
-			_.each(districtData, function(v, k, l) {
-				if(k != 'Admin3') {
-					lineChartData.push(v ? parseInt(v) : 0);
-				}
-			});
+			if(scope.district == 'KathmanduValley') {
+				districtData = _.filter(scope.lineChart, function(d) {
+					return d.Admin3 == 'Kathmandu' || d.Admin3 == 'Bhaktapur' || d.Admin3 == 'Lalitpur';
+				});
+				console.log('The kathmandu valley: ', districtData);
+				_.each(districtData, function(el, i) {
+					var j = 0;
+					_.each(el, function(v, k, l) {
+						if(k != 'Admin3') {
+							console.log(j);
+							var formerValue = lineChartData[j] ? lineChartData[j] : 0;
+							lineChartData[j] = v ? (formerValue + parseInt(v)) : formerValue;
+							j++;
+						}
+					});
+				});
+			}
+			else {
+				districtData = _.find(scope.lineChart, function(d) {
+					return d.Admin3 == scope.district;
+				});
+				_.each(districtData, function(v, k, l) {
+					if(k != 'Admin3') {
+						lineChartData.push(v ? parseInt(v) : 0);
+					}
+				});
+			}
+
+			// var lineChartData = [];
+
+			// _.each(districtData, function(v, k, l) {
+			// 	if(k != 'Admin3') {
+			// 		lineChartData.push(v ? parseInt(v) : 0);
+			// 	}
+			// });
 
 			console.log('The line chart data is: ', lineChartData);
 
@@ -63,7 +89,7 @@ angular.module('flowminderUtils')
 
 			svg.append('text')
 					.attr('x', (width - 95))
-					.attr('y', (scope.district == 'Kathmandu') ? (height - yScale(lineChartData[lineChartData.length - 1]) - 25) : (height - yScale(lineChartData[lineChartData.length - 1]) - 10) )
+					.attr('y', (scope.district == 'Kathmandu' || scope.district == 'KathmanduValley') ? (height - yScale(lineChartData[lineChartData.length - 1]) - 25) : (height - yScale(lineChartData[lineChartData.length - 1]) - 10) )
 					.text(d3.format(',f')(lineChartData[lineChartData.length - 1]));
 
 		};
@@ -75,7 +101,7 @@ angular.module('flowminderUtils')
 				'district': '='
 			},
 			restrict: 'A',
-			template: '<h2>{{ district }}</h2>',
+			template: '<h2>{{ district == "KathmanduValley" ? "Kathmandu Valley" : district }}</h2>',
 			link: linker
 		};
 	}]);
