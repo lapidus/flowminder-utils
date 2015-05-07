@@ -44,17 +44,17 @@ svg text {
 
 .logo-flowminder {
 	position:absolute;
-	bottom:60px;
+	bottom:70px;
 	left:60px;
-	width:160px;
+	width:130px;
 	height:auto;
 	z-index:1000;
 }
 .logo-worldpop {
 	position:absolute;
-	bottom:55px;
-	left:240px;
-	width:160px;
+	bottom:65px;
+	left:210px;
+	width:130px;
 	height:auto;
 	z-index:1000;
 }
