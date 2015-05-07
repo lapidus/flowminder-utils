@@ -6,6 +6,19 @@ angular.module('flowminderUtils')
 		var linker = function(scope, element, attrs) {
 			console.log('Map directive loaded');
 
+			//
+			// Add logos
+			//
+			d3.select(element[0])
+				.append('img')
+				.attr('src', 'img/world-pop.jpg')
+				.attr('class', 'logo-worldpop');
+
+			d3.select(element[0])
+				.append('img')
+				.attr('src', 'img/flowminder.png')
+				.attr('class', 'logo-flowminder');
+
 			var nepal = scope.map;
 
 				var width = 940;
