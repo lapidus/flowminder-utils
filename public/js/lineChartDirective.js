@@ -54,11 +54,11 @@ angular.module('flowminderUtils')
 			console.log('The line chart data is: ', lineChartData);
 
 			var width = 280;
-			var height = 160;
+			var height = 200;
 
 			var yScale = d3.scale.linear()
 										.domain([d3.min(lineChartData), d3.max(lineChartData)])
-										.range([40, (height - 40)]);
+										.range([60, (height - 60)]);
 
 			var svg = d3.select(element[0])
 								.append('svg')
@@ -82,14 +82,24 @@ angular.module('flowminderUtils')
 					.attr('class', 'line')
 					.attr('d', line);
 
+			// svg.append('text')
+			// 		.attr('x', 0)
+			// 		.attr('y', (scope.district == 'Rasuwa') ? (height - yScale(lineChartData[0]) - 30) : (height - yScale(lineChartData[0]) + 20) )
+			// 		.text(d3.format(',f')(lineChartData[0]));
+
+			// svg.append('text')
+			// 		.attr('x', (width - 95))
+			// 		.attr('y', (scope.district == 'Kathmandu' || scope.district == 'KathmanduValley') ? (height - yScale(lineChartData[lineChartData.length - 1]) - 25) : (height - yScale(lineChartData[lineChartData.length - 1]) - 10) )
+			// 		.text(d3.format(',f')(lineChartData[lineChartData.length - 1]));
+
 			svg.append('text')
 					.attr('x', 0)
-					.attr('y', (scope.district == 'Rasuwa') ? (height - yScale(lineChartData[0]) - 30) : (height - yScale(lineChartData[0]) + 20) )
+					.attr('y', (height - 5))
 					.text(d3.format(',f')(lineChartData[0]));
 
 			svg.append('text')
 					.attr('x', (width - 95))
-					.attr('y', (scope.district == 'Kathmandu' || scope.district == 'KathmanduValley') ? (height - yScale(lineChartData[lineChartData.length - 1]) - 25) : (height - yScale(lineChartData[lineChartData.length - 1]) - 10) )
+					.attr('y', 20 )
 					.text(d3.format(',f')(lineChartData[lineChartData.length - 1]));
 
 		};
