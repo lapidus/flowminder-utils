@@ -14,7 +14,21 @@ angular.module('flowminderUtils')
 		$scope.factor = 1;
 
 		$scope.model = {
-			districts: ['Kathmandu', 'Gorkha', 'Dhading', 'Nuwakot', 'Rasuwa', 'Sindhupalchok'],
+			districts: ['Kathmandu',
+
+				'Dhading',
+				'Dolakha',
+				'Gorkha',
+				'Kabhrepalanchok',
+				'Makawanpur',
+				'Nuwakot',
+				'Okhaldhunga',
+				'Ramechhap',
+				'Rasuwa',
+				'Sindhupalchok'
+
+
+			],
 			districtsData: {}
 		};
 
