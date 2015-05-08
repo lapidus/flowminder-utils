@@ -65,8 +65,8 @@ angular.module('flowminderUtils')
 								flowsData.grouped = _.groupBy(parsedData, 'from');
 
 
-								_.each(flowsData.all, function(obj, key){
-									/*Kathmandu, Lalitpur and Bhaktapur*/
+							/*	_.each(flowsData.all, function(obj, key){
+									*//*Kathmandu, Lalitpur and Bhaktapur*//*
 									if(obj.from == "Lalitpur" || obj.from == "Bhaktapur"){
 										if(_.findWhere(flowsData.grouped.Kathmandu, {to : obj.to})) {
 											_.findWhere(flowsData.grouped.Kathmandu, {to: obj.to})['above normal_0'] += obj['above normal_0'];
@@ -78,7 +78,7 @@ angular.module('flowminderUtils')
 								})
 
 								_.each(flowsData.all, function(obj, key){
-									/*Kathmandu, Lalitpur and Bhaktapur*/
+									*//*Kathmandu, Lalitpur and Bhaktapur*//*
 									if(obj.to == "Lalitpur" || obj.to == "Bhaktapur"){
 										if(_.findWhere(flowsData.grouped[obj.from], {to : 'Kathmandu'})) {
 											_.findWhere(flowsData.grouped[obj.from], {to : 'Kathmandu'})['above normal_0'] += obj['above normal_0'];
@@ -87,7 +87,7 @@ angular.module('flowminderUtils')
 											flowsData.grouped[obj.from].push({to: "Kathmandu", from: obj.from, 'above normal_0': obj['above normal_0']})
 										}
 									}
-								})
+								})*/
 
 
 								console.log('THIS IS WHAT THE UNGROUPING LOOKS LIKE: ', flowsData.all);
@@ -115,13 +115,13 @@ angular.module('flowminderUtils')
 									obj['above normal_0'] = +obj['above normal_0'];
 								})
 
-								_.each(parsedData, function(obj, key){
+								/*_.each(parsedData, function(obj, key){
 
-									/*Kathmandu, Lalitpur and Bhaktapur*/
+									*//*Kathmandu, Lalitpur and Bhaktapur*//*
 									if(obj.to == "Lalitpur" || obj.to == "Bhaktapur"){
 										_.findWhere(parsedData, {to : "Kathmandu"})['above normal_0'] += obj['above normal_0'];
 									}
-								})
+								})*/
 
 
 

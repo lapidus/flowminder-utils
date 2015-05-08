@@ -298,7 +298,7 @@ angular.module('flowminderUtils')
 					})
 
 					if(scope.district == "Kathmandu"){
-						var featuresToDraw = _.filter(subunits.features, function (d){
+						featuresToDraw = _.filter(subunits.features, function (d){
 							return d.properties.DISTRICT != "Lalitpur" && d.properties.DISTRICT != "Bhaktapur" && d.properties.DISTRICT != "Kathmandu" ;
 						})
 					}
