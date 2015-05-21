@@ -21,17 +21,21 @@ angular.module('flowminderUtils')
 
 			var nepal = scope.map;
 
-				var width = 940;
-				var height = 460;
+				var width = 740;
+				var height = 420;
 
 				var svg = d3.select(element[0])
 								.append('svg')
 								.attr('width', width)
-								.attr('height', height);
+								.attr('height', height)
+								.attr('class', 'map export')
+								.attr('id', function (d){
+									return scope.district;
+								})
 
 				var projection = d3.geo.mercator()
 								.scale(5000)
-								.center([85, 28.2])
+								.center([84.2, 28.4])
 								.translate([width / 2, height / 2]);
 
 				var path = d3.geo.path().projection(projection);
@@ -50,7 +54,7 @@ angular.module('flowminderUtils')
 							return '#e2e2e2'
 						}
 					})
-
+					.attr('stroke','#999')
 					.attr('d', path)
 					.attr('class', function(d, i) { return 'subunit ' + d.properties.DISTRICT; });
 
@@ -188,9 +192,9 @@ angular.module('flowminderUtils')
 					}
 					else{
 						var radiusScale = d3.scale.sqrt()
-							.domain([0, 6000]) //.domain([Math.abs(bubbleMin.value), Math.abs(bubbleMax.value)])
+							.domain([0, 5500]) //.domain([Math.abs(bubbleMin.value), Math.abs(bubbleMax.value)])
 							.range([0, 38]);
-						values = [300, 1500, 3000, 6000];
+						values = [300, 1500, 3000, 5500];
 					}
 
 					// var opacityScale = d3.scale.linear()
@@ -222,7 +226,7 @@ angular.module('flowminderUtils')
 							return '#666';  //colorScale(item.value);
 						})
 						.attr('transform', function(d, i) {
-							return 'translate(' + (600 + 100*i) + ',' + (30)  +')';
+							return 'translate(' + (550 + 100*i) + ',' + (30)  +')';
 						})
 						.attr('r', function(d,i) {
 							return 10;
@@ -240,7 +244,7 @@ angular.module('flowminderUtils')
 							return 'Droid Sans, Helvetica, sans-serif';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 						})
 						.attr('x', function(d, i) {
-							return (600 + 100*i) +15;
+							return (550 + 100*i) +15;
 						})
 						.attr('y', function(d, i) {
 							return (36);
@@ -251,12 +255,14 @@ angular.module('flowminderUtils')
 
 
 
-					var legendBubbles = legend.selectAll('.bubble').data(values);
+					var legendBubbles = legend.selectAll('.legendBubble')
+						.data(values);
 
 					var y = 0;
 
 					legendBubbles.enter()
 						.append('circle')
+						.attr('class','legendBubble')
 						.style('fill', function(d) {
 							return '#fff'; //d.negative ? '#00569a' : '#BF360C'; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 						})
@@ -265,7 +271,7 @@ angular.module('flowminderUtils')
 						})
 						.attr('transform', function(d, i) {
 							y += radiusScale(d) + radiusScale(d)/2;
-							return 'translate(' + (600) + ',' + (50 + y)  +')';
+							return 'translate(' + (620) + ',' + (50 + y)  +')';
 						})
 						.attr('r', function(d,i) {
 							var value = d;
@@ -274,8 +280,12 @@ angular.module('flowminderUtils')
 
 					var y = 0;
 
-					legendBubbles.enter()
+					var legendText = legend.selectAll('.legendText')
+						.data(values);
+
+					legendText.enter()
 						.append('text')
+						.attr('class','legendText')
 						.style('fill', function(d) {
 							return '#333';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 						})
@@ -286,7 +296,7 @@ angular.module('flowminderUtils')
 							return 'Droid Sans, Helvetica, sans-serif';  //d.negative ? "#00569a" : "#BF360C"; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 						})
 						.attr('x', function(d, i) {
-							return 600 + radiusScale(d) + 5;
+							return 620 + radiusScale(d) + 5;
 						})
 						.attr('y', function(d, i) {
 							y += radiusScale(d) + radiusScale(d)/2;

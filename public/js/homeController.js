@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('flowminderUtils')
-	.controller('homeCtrl', ['$scope', 'mapData', 'flowsData', 'nationData', 'lineChartData', function($scope, mapData, flowsData, nationData, lineChartData) {
+	.controller('homeCtrl', ['$scope', 'mapData', 'flowsData', 'nationData', 'lineChartData', '$http', function($scope, mapData, flowsData, nationData, lineChartData, $http) {
 
 		console.log('Home controller loaded.');
 
@@ -9,6 +9,8 @@ angular.module('flowminderUtils')
 		console.log('flowsData: ', flowsData);
 		console.log('nationData: ', nationData);
 		console.log('lineChartData: ', lineChartData);
+
+
 
 		$scope.distance = 0;
 		$scope.factor = 1;
@@ -37,39 +39,65 @@ angular.module('flowminderUtils')
 
 		$scope.model.lineChartData = lineChartData;
 
-		// var deferredMap = $q.defer();
 
-		// $http.get('data/admin3/features.json')
-		// 	.success(deferredMap.resolve)
-		// 	.error(deferredMap.reject);
+		$scope.exportChart = function (format) {
 
-		// $scope.mapPromise = deferredMap.promise;
+			console.log("Exporting");
 
-		// $scope.mapPromise.then(function(m) {
-		// 	$scope.model.map = m;
-		// });
 
-		// var deferredData = $q.defer();
-		// $http.get('data/flows.json')
-		// 	.success(deferredData.resolve)
-		// 	.error(deferredData.reject);
+			d3.selectAll('.export').each(function (){
+				var chart = d3.select(this),
+					serializedChart = (new XMLSerializer()).serializeToString(chart.node());
 
-		// $scope.dataPromise = deferredData.promise;
+				console.log("se");
 
-		// $scope.dataPromise.then(function(d) {
-		// 	$scope.model.allData = d;
-		// 	$scope.model.districtsData = _.groupBy(d, 'from');
-		// });
+				var params = {
+					content: serializedChart,
+					format: 'png',
+					filename : d3.select(this).attr('id')
+				};
 
-		// var deferredData = $q.defer();
-		// $http.get('data/nation.json')
-		// 	.success(deferredData.resolve)
-		// 	.error(deferredData.reject);
+				console.log("p", params);
 
-		// $scope.dataPromise = deferredData.promise;
+					$scope.saving = 0;
 
-		// $scope.dataPromise.then(function(d) {
-		// 	$scope.model['nation'] = d;
-		// });
+
+					$http.post('./export', params).
+					success(function(filePath, status, headers, config) {
+
+
+							$scope.saving += 1;
+						console.log("Success");
+
+						//window.location.href = apiExportBaseUrl + filePath;
+					}).
+					error(function(data, status, headers, config) {
+						console.log('EXPORT FAIL', data.message);
+					});
+
+
+			})
+
+			/*var parent = element.parents('.bubble-chart-holder'),
+			 chart = d3.select(parent[0]).select('svg.chart'),
+			 serializedChart = (new XMLSerializer()).serializeToString(chart.node());
+
+			 dataService.exportChart(serializedChart, format);*/
+		}
+
+
+		/**
+		 * Simple setup for exporting the charts
+		 * @param  {String} chart Serialized chart source
+		 * @param  {String} format What to export, .png, .svg, .pdf
+		 * @return {[type]}       [description]
+		 */
+		/*function exportChart (chart, format) {
+
+		};*/
+
+
+
+
 
 	}]);

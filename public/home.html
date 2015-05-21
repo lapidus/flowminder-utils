@@ -2,7 +2,6 @@
 	<h1>{{ district }}</h1>
 </script>
 
-
 <select name="" ng-model="distance" id="" style="position:fixed;top:0;right:0;">
 	<option value="0">0</option>
 	<option value="5">5</option>
@@ -11,8 +10,15 @@
 	<option value="20">20</option>
 </select>
 
-
+Scale values by:
 <input type="text" name="" ng-model="factor" id="" style="" />
+<br/><br/>
+<button type="button" class="btn" ng-click="exportChart()">Export charts to Amazon (PNG format)</button>
+<div ng-if="saving">{{ 'Saved ' + saving + ' charts' }}
+	<br/>
+	Available at:
+	https://console.aws.amazon.com/s3/home?region=eu-west-1#&bucket=flowminder-utils&prefix=projects/nepal/exports/png/
+</div>
 
 <!-- <div class="main" id="main">
 	<div distance="distance" data="model['nation']" district="'Overall'" map="mapPromise" districts="dataPromise"></div>

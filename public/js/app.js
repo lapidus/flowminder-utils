@@ -24,7 +24,7 @@ angular.module('flowminderUtils')
 				url: '/',
 				resolve: {
 					mapData: ['dataService', function(dataService) {
-						return dataService.getData(dataRoot + 'data/admin3/features.json')
+						return dataService.getData('data/admin3/features_min.json')
 							.then(function(data) {
 								return data;
 							}, function(err) {

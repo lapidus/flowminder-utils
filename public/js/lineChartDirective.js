@@ -19,12 +19,12 @@ angular.module('flowminderUtils')
 				districtData = _.filter(scope.lineChart, function(d) {
 					return d.Admin3 == 'Kathmandu' || d.Admin3 == 'Bhaktapur' || d.Admin3 == 'Lalitpur';
 				});
-				console.log('The kathmandu valley: ', districtData);
+				//console.log('The kathmandu valley: ', districtData);
 				_.each(districtData, function(el, i) {
 					var j = 0;
 					_.each(el, function(v, k, l) {
 						if(k != 'Admin3') {
-							console.log(j);
+							//console.log(j);
 							var formerValue = lineChartData[j] ? lineChartData[j] : 0;
 							lineChartData[j] = v ? (formerValue + parseInt(v)) : formerValue;
 							j++;
@@ -51,7 +51,7 @@ angular.module('flowminderUtils')
 			// 	}
 			// });
 
-			console.log('The line chart data is: ', lineChartData);
+			//console.log('The line chart data is: ', lineChartData);
 
 			var width = 280;
 			var height = 200;
@@ -62,6 +62,11 @@ angular.module('flowminderUtils')
 
 			var svg = d3.select(element[0])
 								.append('svg')
+								//.attr('class', 'export')
+								.attr('id', function (){
+								    return scope.district;
+								})
+
 								.attr('width', width)
 								.attr('height', height)
 								.append('g')
