@@ -36,7 +36,7 @@ app.post('/export', function (req, res) {
 	console.log("body", req.body.format);
 
 	var filename = req.body.filename,
-		dest = __dirname + '/public/charts/' + filename + '.' + req.body.format;
+		dest = './tmp/' + filename + '.' + req.body.format;
 
 	
 	svg2png(req.body.content, dest, 2, function (err) {
@@ -73,9 +73,9 @@ app.post('/export', function (req, res) {
 	});
 });
 
-app.get('/charts/:file', function (req, res) {
+/*app.get('/charts/:file', function (req, res) {
 	res.sendFile(__dirname + '/charts/' + req.params.file);
-c});
+c});*/
 
 
 
