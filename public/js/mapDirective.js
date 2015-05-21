@@ -220,7 +220,7 @@ angular.module('flowminderUtils')
 							//return d == 'Negative' ? '#00569a' : '#BF360C'; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 						})
 						.style('fill-opacity', function(d) {
-							return 0.7; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
+							return 0.6; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 						})
 						.style('stroke', function(d) {
 							return '#666';  //colorScale(item.value);
@@ -332,8 +332,13 @@ angular.module('flowminderUtils')
 							return d.properties.DISTRICT;
 						});
 
+					console.log("bba", bubbles);
+					
 					bubbles.enter()
-						.append('circle');
+						.append('circle')
+						.attr('class', function(d) {
+							return 'bubble ' + 'bubble_' + d.properties.DISTRICT;
+						})
 
 					bubbles.transition()
 						// .attr('fill-opacity', function(d) {
@@ -343,9 +348,7 @@ angular.module('flowminderUtils')
 						// 	return opacityScale(item.value);
 						// })
 						.attr('fill-opacity', 0.8)
-						.attr('class', function(d) {
-							return 'bubble ' + 'bubble_' + d.properties.DISTRICT;
-						})
+
 						.style('fill', function(d) {
 							var item = d.properties.DISTRICT;
 
