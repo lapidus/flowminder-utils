@@ -5,9 +5,9 @@ angular.module('flowminderUtils')
 
 		var linker = function(scope, element, attrs) {
 
-			console.log('Line chart directive loaded');
-			console.log('The data is: ', scope.lineChart);
-			console.log('The district of this line graph is: ', scope.district);
+			//console.log('Line chart directive loaded');
+			//console.log('The data is: ', scope.lineChart);
+			//console.log('The district of this line graph is: ', scope.district);
 
 			// var districtData = _.find(scope.lineChart, function(d) {
 			// 	return d[0] == scope.district;

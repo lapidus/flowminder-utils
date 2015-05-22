@@ -19,6 +19,16 @@ angular.module('flowminderUtils')
 				.attr('src', 'img/flowminder.png')
 				.attr('class', 'logo-flowminder');
 
+			
+			function getID(d){
+				if(scope.district == 'Admin4'){
+					return d.id;
+				}
+				else{
+					return d.properties.DISTRICT;
+				}
+			}
+			
 			var nepal = scope.map;
 
 				var width = 740;
@@ -56,9 +66,11 @@ angular.module('flowminderUtils')
 					})
 					.attr('stroke','#999')
 					.attr('d', path)
-					.attr('class', function(d, i) { return 'subunit ' + d.properties.DISTRICT; });
+					.attr('class', function(d, i) { return 'subunit ' + getID(d); });
 
 
+			
+			
 				//
 				// Wait for district data to load
 				//
@@ -83,10 +95,9 @@ angular.module('flowminderUtils')
 					.attr('class', 'legend');
 
 				var districtFeature = _.filter(subunits.features, function (d) {
-					return d.properties.DISTRICT == scope.district;
+					return getID(d) == scope.district;
 				})[0];
 
-				console.log('dd', districtFeature);
 
 				if(scope.district != 'Overall') {
 					var pin = svg.append('g')
@@ -146,7 +157,7 @@ angular.module('flowminderUtils')
 
 						// obj.value = _.findWhere(scope.data, {'to': obj.properties.DISTRICT })[valueColumn];
 
-						obj.value = _.result(_.findWhere(scope.data, { 'to': obj.properties.DISTRICT }), valueColumn, '0')*scope.factor;
+						obj.value = _.result(_.findWhere(scope.data, { 'to': getID(obj) }), valueColumn, '0')*scope.factor;
 
 						if(obj.value < 0){
 							obj.negative = true;
@@ -158,7 +169,6 @@ angular.module('flowminderUtils')
 						return Math.abs(b.value) - Math.abs(a.value);
 					});
 
-					console.log('read', subunits.features);
 
 					var bubbleMax = _.max(subunits.features, function(item) {
 						return Math.abs(item.value);
@@ -168,8 +178,8 @@ angular.module('flowminderUtils')
 					});
 
 
-					console.log('BubbleMin: ', bubbleMin);
-					console.log('BubbleMax: ', bubbleMax);
+					//console.log('BubbleMin: ', bubbleMin);
+					//console.log('BubbleMax: ', bubbleMax);
 
 					var colorScale = d3.scale.sqrt()
 						.domain([bubbleMin.value, bubbleMax.value])
@@ -317,40 +327,42 @@ angular.module('flowminderUtils')
 						});*/
 
 					var featuresToDraw = _.filter(subunits.features, function (d){
-					    return d.properties.DISTRICT != "Lalitpur" && d.properties.DISTRICT != "Bhaktapur";
+					    return getID(d) != "Lalitpur" && getID(d) != "Bhaktapur";
 					})
 
 					if(scope.district == "Kathmandu"){
 						featuresToDraw = _.filter(subunits.features, function (d){
-							return d.properties.DISTRICT != "Lalitpur" && d.properties.DISTRICT != "Bhaktapur" && d.properties.DISTRICT != "Kathmandu" ;
+							return getID(d) != "Lalitpur" && getID(d) != "Bhaktapur" && getID(d) != "Kathmandu" ;
 						})
 					}
 
 
+					console.log(scope.district,"Features", featuresToDraw);
+
+
 					var bubbles = container.selectAll('.bubble')
 						.data(featuresToDraw, function (d){
-							return d.properties.DISTRICT;
+							return getID(d);
 						});
 
-					console.log("bba", bubbles);
-					
+
 					bubbles.enter()
 						.append('circle')
 						.attr('class', function(d) {
-							return 'bubble ' + 'bubble_' + d.properties.DISTRICT;
+							return 'bubble ' + 'bubble_' + getID(d);
 						})
 
 					bubbles.transition()
 						// .attr('fill-opacity', function(d) {
 						// 	var item = _.find(bubbleData, function(item) {
-						// 		return item.to == d.properties.DISTRICT;
+						// 		return item.to == getID(d);
 						// 	});
 						// 	return opacityScale(item.value);
 						// })
 						.attr('fill-opacity', 0.8)
 
 						.style('fill', function(d) {
-							var item = d.properties.DISTRICT;
+							var item = getID(d);
 
 							//return '#00569a'; //colorScale(item.value); //"#00569a";  //colorScale(item.value);
 							if(scope.district == 'Overall'){

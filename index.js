@@ -9,19 +9,11 @@ var svg2png  = require('svg2png'),
 
 var app = express();
 
-
 app.use(bodyParser.json({limit: '50mb'}));
 
 app.set('port', (process.env.PORT || 5000));
-
 app.use(express.static(__dirname + '/public'));
 
-//
-// Middlewear solution
-//
-// app.use(function(req, res) {
-// 	res.sendfile(__dirname + '/public/index.html');
-// });
 
 //
 // Routing solution
@@ -31,14 +23,13 @@ app.get('/', function(req, res) {
 });
 
 
-app.post('/export', function (req, res) {
 
-	console.log("body", req.body.format);
+
+app.post('/export', function (req, res) {
 
 	var filename = req.body.filename,
 		dest = './tmp/' + filename + '.' + req.body.format;
 
-	
 	svg2png(req.body.content, dest, 2, function (err) {
 		if (err) {
 			res.status(500).send(err);
@@ -66,17 +57,10 @@ app.post('/export', function (req, res) {
 			console.log("Uploaded file to S3: ", filename);
 
 			res.status(201).send("OK!");
-
-
 		})
 		
 	});
 });
-
-/*app.get('/charts/:file', function (req, res) {
-	res.sendFile(__dirname + '/charts/' + req.params.file);
-c});*/
-
 
 
 
@@ -89,7 +73,6 @@ function makeID (length) {
 
 	return id;
 }
-
 
 
 app.listen(app.get('port'), function() {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('flowminderUtils')
-	.controller('homeCtrl', ['$scope', 'mapData', 'flowsData', 'nationData', 'lineChartData', '$http', function($scope, mapData, flowsData, nationData, lineChartData, $http) {
+	.controller('homeCtrl', ['$scope', 'mapData', 'admin4', 'admin4Data', 'flowsData', 'nationData', 'lineChartData', '$http', function($scope, mapData, admin4, admin4Data, flowsData, nationData, lineChartData, $http) {
 
 		console.log('Home controller loaded.');
 
@@ -9,7 +9,6 @@ angular.module('flowminderUtils')
 		console.log('flowsData: ', flowsData);
 		console.log('nationData: ', nationData);
 		console.log('lineChartData: ', lineChartData);
-
 
 
 		$scope.distance = 0;
@@ -33,9 +32,12 @@ angular.module('flowminderUtils')
 		};
 
 		$scope.model.map = mapData;
+		$scope.model.admin4 = admin4;
+
 		$scope.model.allData = flowsData.all;
 		$scope.model.districtsData = flowsData.grouped;
 		$scope.model['nation'] = nationData;
+		$scope.model['admin4Data'] = admin4Data;
 
 		$scope.model.lineChartData = lineChartData;
 
