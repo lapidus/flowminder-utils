@@ -9,7 +9,7 @@ angular.module('flowminderUtils')
 			//
 			// Add logos
 			//
-			d3.select(element[0])
+			/*d3.select(element[0])
 				.append('img')
 				.attr('src', 'img/world-pop.jpg')
 				.attr('class', 'logo-worldpop');
@@ -17,7 +17,7 @@ angular.module('flowminderUtils')
 			d3.select(element[0])
 				.append('img')
 				.attr('src', 'img/flowminder.png')
-				.attr('class', 'logo-flowminder');
+				.attr('class', 'logo-flowminder');*/
 
 			
 			function getID(d){
@@ -34,17 +34,58 @@ angular.module('flowminderUtils')
 				var width = 740;
 				var height = 420;
 
-				var svg = d3.select(element[0])
+			var zoom = d3.behavior.zoom()
+				.scaleExtent([1, 10])
+				.on("zoom", zoomed);
+
+			var drag = d3.behavior.drag()
+				.origin(function(d) { return d; })
+				.on("dragstart", dragstarted)
+				.on("drag", dragged)
+				.on("dragend", dragended);
+
+
+			var svg = d3.select(element[0])
 								.append('svg')
 								.attr('width', width)
 								.attr('height', height)
 								.attr('class', 'map export')
 								.attr('id', function (d){
 									return scope.district;
-								})
+								});
+
+			var container = svg
+							.append("g")
+							//.attr("transform", "translate(" + 10 + "," + 10 + ")")
+							.call(zoom);
+
+
+			function zoomed() {
+				container.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+			}
+
+			function dragstarted(d) {
+				d3.event.sourceEvent.stopPropagation();
+				d3.select(this).classed("dragging", true);
+			}
+
+			function dragged(d) {
+				d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
+			}
+
+			function dragended(d) {
+				d3.select(this).classed("dragging", false);
+			}
+
+
+			var scale = 5000;
+
+				if(scope.district == "Admin4"){
+					scale = 3000;
+				}
 
 				var projection = d3.geo.mercator()
-								.scale(5000)
+								.scale(scale)
 								.center([84.2, 28.4])
 								.translate([width / 2, height / 2]);
 
@@ -52,25 +93,7 @@ angular.module('flowminderUtils')
 
 				var subunits = topojson.feature(nepal, nepal.objects.features);
 
-				svg.selectAll('.subunit')
-					.data(subunits.features)
-					.enter()
-					.append('path')
-					.attr('fill', function (){
-						if(scope.district == 'Overall'){
-							return '#f2f2f2';
-						}
-						else{
-							return '#e2e2e2'
-						}
-					})
-					.attr('stroke','#999')
-					.attr('d', path)
-					.attr('class', function(d, i) { return 'subunit ' + getID(d); });
 
-
-			
-			
 				//
 				// Wait for district data to load
 				//
@@ -87,8 +110,10 @@ angular.module('flowminderUtils')
 				});
 
 
+				var shapeContainer = container.append('g')
+					.attr('class', 'shapeContainer');
 
-				var container = svg.append('g')
+				var bubbleContainer = container.append('g')
 					.attr('class', 'bubbles');
 
 				var legend = svg.append('g')
@@ -99,8 +124,8 @@ angular.module('flowminderUtils')
 				})[0];
 
 
-				if(scope.district != 'Overall') {
-					var pin = svg.append('g')
+				if(scope.district != 'Overall' && scope.district !== 'Admin4') {
+					var pin = container.append('g')
 						.attr('class', 'pin')
 						.attr('transform', function (d) {
 							var centroid = path.centroid(districtFeature);
@@ -151,7 +176,38 @@ angular.module('flowminderUtils')
 
 					if(!scope.data) return;
 
+
 					var valueColumn = 'above normal_' + scope.distance;
+
+
+					var shapes = shapeContainer.selectAll('.subunit')
+						.data(subunits.features, function (d){
+						    return getID(d);
+						});
+
+					shapes.enter()
+						.append('path')
+						.attr("vector-effect", "non-scaling-stroke")
+
+					shapes
+						.attr('fill', function (d){
+							if(scope.district == 'Overall'){
+								return '#f2f2f2';
+							}
+							else{
+								return '#e2e2e2'
+							}
+						})
+						.attr('fill-opacity', function (d){
+							if(scope.highlighted && scope.highlighted != d.properties.DIST_NAME){
+								return '0.2';
+							}
+						})
+						.attr('stroke','#999')
+						.attr('d', path)
+						.attr('class', function(d, i) { return 'subunit ' + getID(d); });
+
+
 
 					_.each(subunits.features, function(obj, key){
 
@@ -194,6 +250,12 @@ angular.module('flowminderUtils')
 							.domain([0, 90000]) //.domain([Math.abs(bubbleMin.value), Math.abs(bubbleMax.value)])
 							.range([0, 38]);
 					}
+					else if(scope.district == 'Admin4'){
+						var radiusScale = d3.scale.sqrt()
+							.domain([0, 3000000]) //.domain([Math.abs(bubbleMin.value), Math.abs(bubbleMax.value)])
+							.range([0, 38]);
+						values = [20000, 50000, 100000, 200000];
+					}
 					else if(scope.district == 'Overall'){
 						var radiusScale = d3.scale.sqrt()
 							.domain([0, 400000]) //.domain([Math.abs(bubbleMin.value), Math.abs(bubbleMax.value)])
@@ -210,7 +272,6 @@ angular.module('flowminderUtils')
 					// var opacityScale = d3.scale.linear()
 					// 										.domain([bubbleMin.value, bubbleMax.value])
 					// 										.range([1, 0.6]);
-
 
 
 					var posBubbles = legend.selectAll('.posBubble')
@@ -340,7 +401,7 @@ angular.module('flowminderUtils')
 					console.log(scope.district,"Features", featuresToDraw);
 
 
-					var bubbles = container.selectAll('.bubble')
+					var bubbles = bubbleContainer.selectAll('.bubble')
 						.data(featuresToDraw, function (d){
 							return getID(d);
 						});
@@ -348,6 +409,8 @@ angular.module('flowminderUtils')
 
 					bubbles.enter()
 						.append('circle')
+						.attr("vector-effect", "non-scaling-stroke")
+
 						.attr('class', function(d) {
 							return 'bubble ' + 'bubble_' + getID(d);
 						})
