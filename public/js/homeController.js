@@ -26,7 +26,9 @@ angular.module('flowminderUtils')
 				'Okhaldhunga',
 				'Ramechhap',
 				'Rasuwa',
-				'Sindhupalchok'
+				'Sindhuli',
+				'Sindhupalchok',
+
 			],
 			districtsData: {}
 		};
