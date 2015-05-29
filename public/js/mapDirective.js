@@ -177,7 +177,7 @@ angular.module('flowminderUtils')
 					if(!scope.data) return;
 
 
-					var valueColumn = 'above normal_' + scope.distance;
+					var valueColumn = 'value';
 
 
 					var shapes = shapeContainer.selectAll('.subunit')

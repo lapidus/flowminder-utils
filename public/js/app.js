@@ -46,7 +46,7 @@ angular.module('flowminderUtils')
 								var parsedData = d3.csv.parse(data);
 
 								_.each(parsedData, function(obj, key){
-									obj['above normal_0'] = +obj['above normal_0'];
+									obj['value'] = +obj['value'];
 								})
 
 								return parsedData;
@@ -67,7 +67,7 @@ angular.module('flowminderUtils')
 
 
 								_.each(parsedData, function(obj, key){
-									obj['above normal_0'] = +obj['above normal_0'];
+									obj['value'] = +obj['value'];
 								})
 
 								flowsData.all = parsedData;
@@ -85,12 +85,12 @@ angular.module('flowminderUtils')
 					nationData: ['dataService', function(dataService) {
 
 
-						return dataService.getData(dataRoot + 'data/nation.csv')
+						return dataService.getData(dataRoot + 'data/inflows.csv')
 							.then(function(data) {
 								var parsedData = d3.csv.parse(data);
 
 								_.each(parsedData, function(obj, key){
-									obj['above normal_0'] = +obj['above normal_0'];
+									obj['value'] = +obj['value'];
 								})
 
 
